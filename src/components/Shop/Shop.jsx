@@ -13,7 +13,23 @@ const Shop = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const { count } = useLoaderData();
-  console.log(count);
+  //   console.log(count);
+  const itemsPerPage = 10;
+  const numberOfPages = Math.ceil(count / itemsPerPage);
+  //   const pages = [];
+  //   for (let i = 0; i < numberOfPages; i++) {
+  //     pages.push(i);
+  //   }
+  const pages = [...Array(numberOfPages).keys()];
+  console.log(pages);
+
+  /**
+   * Done 1: get the total number of products
+   * TODO 2: number of items per page (dynamic)
+   * 3: Calculate total number of pages: Math.ceil(count / itemsPerPage)
+   * 4: Make array of pages: [...Array(numberOfPages).keys()]
+   * 5: Create pagination control by mapping the pages array to display page number buttons.
+   */
 
   useEffect(() => {
     fetch('http://localhost:5000/products')
@@ -67,22 +83,29 @@ const Shop = () => {
   };
 
   return (
-    <div className="shop-container">
-      <div className="products-container">
-        {products.map(product => (
-          <Product
-            key={product._id}
-            product={product}
-            handleAddToCart={handleAddToCart}
-          ></Product>
-        ))}
+    <div>
+      <div className="shop-container">
+        <div className="products-container">
+          {products.map(product => (
+            <Product
+              key={product._id}
+              product={product}
+              handleAddToCart={handleAddToCart}
+            ></Product>
+          ))}
+        </div>
+        <div className="cart-container">
+          <Cart cart={cart} handleClearCart={handleClearCart}>
+            <Link className="proceed-link" to="/orders">
+              <button className="btn-proceed">Review Order</button>
+            </Link>
+          </Cart>
+        </div>
       </div>
-      <div className="cart-container">
-        <Cart cart={cart} handleClearCart={handleClearCart}>
-          <Link className="proceed-link" to="/orders">
-            <button className="btn-proceed">Review Order</button>
-          </Link>
-        </Cart>
+      <div className="pagination">
+        {pages.map(page => (
+          <button key={page}>{page}</button>
+        ))}
       </div>
     </div>
   );
