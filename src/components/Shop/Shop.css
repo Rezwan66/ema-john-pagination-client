@@ -28,5 +28,8 @@
 
 .pagination {
   margin: 50px auto;
-  max-width: 500px;
+  max-width: 550px;
+}
+.pagination button {
+  margin-right: 10px;
 }
