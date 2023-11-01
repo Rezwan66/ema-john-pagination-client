@@ -34,13 +34,17 @@ const Shop = () => {
    * 5: Create pagination control by mapping the pages array to display page number buttons.
    * 6: Set state of itemsPerPage, create a page size dropdown, and a handleItemsPerPage callback function onChange. This will change page array size, and buttons accordingly.
    * 7: Get the current page
+   * 8: Now add the Prev and Next buttons next to the mapped pages buttons and handle the current page state change on click
+   * 9: set skip and limit to the fetch query to get the data
    */
 
   useEffect(() => {
-    fetch('http://localhost:5000/products')
+    fetch(
+      `http://localhost:5000/products?page=${currentPage}&size=${itemsPerPage}`
+    )
       .then(res => res.json())
       .then(data => setProducts(data));
-  }, []);
+  }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
     const storedCart = getShoppingCart();
@@ -131,7 +135,7 @@ const Shop = () => {
         <button onClick={handlePrevPage}>Prev</button>
         {pages.map(page => (
           <button
-            className={currentPage === page && 'selected'}
+            className={currentPage === page ? 'selected' : ''}
             onClick={() => setCurrentPage(page)}
             key={page}
           >
